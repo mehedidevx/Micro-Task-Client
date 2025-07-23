@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+@plugin "daisyui";
+.active {
+  background-color: #00bba7;
+  color: white;
+}
+.btn-primary {
+  @apply bg-[#00bba7] text-white px-4 py-2 rounded-lg hover:bg-[#00bba8] transition;
+}
+.text-primary {
+  @apply text-[#00BBA7];
+}
+.bg-primary {
+  @apply bg-[#00BBA7];
+}
+.border-primary {
+  @apply border-[#00bba7];
+}
+body{
+   font-family: "Roboto", sans-serif;
+}
