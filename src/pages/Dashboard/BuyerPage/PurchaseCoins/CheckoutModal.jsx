@@ -34,7 +34,7 @@ const CheckoutModal = ({ open, setOpen, selectedPackage }) => {
     } else if (result.paymentIntent.status === "succeeded") {
       toast.success("Payment successful!");
       setOpen(false);
-      // TODO: Backend এ coins update করো এখানে
+      // TODO: Backend এ coins update করো এখান
     }
   };
 
