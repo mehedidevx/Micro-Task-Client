@@ -96,7 +96,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright */}
+      {/* Copyright  */}
       <div className="text-center py-4 bg-base-300 text-sm text-gray-500">
         © {new Date().getFullYear()} MicroTask. All rights reserved.
       </div>
