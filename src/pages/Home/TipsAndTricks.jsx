@@ -12,7 +12,7 @@ const tips = [
   "💡 Keep learning new skills to stay competitive.",
 ];
 
-// ---- Animation variants ----
+// ---- Animation variants ---
 const container = {
   hidden: { opacity: 0 },
   show: {
