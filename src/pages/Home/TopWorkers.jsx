@@ -48,7 +48,7 @@ const TopWorkers = () => {
       key={worker._id || worker.email}
       className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-5 text-center"
     >
-      {/* Profile Photo  */}
+      {/* Profile Photo */}
       <div className="flex justify-center mb-4">
         <img
           src={worker.photo || "/default-user.png"}
