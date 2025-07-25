@@ -40,7 +40,7 @@ const AddTask = () => {
     const payableAmount = parseFloat(data.payable_amount);
     const totalCost = requiredWorkers * payableAmount;
 
-    // ✅ Check Coin Balance
+    //  Check Coin Balance
     if (userInfo.coin < totalCost) {
       toast.error("❌ You don't have enough coins to add this task.");
       return;
