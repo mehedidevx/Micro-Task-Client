@@ -58,7 +58,7 @@ const AddTask = () => {
     };
 
     try {
-      // 1️⃣ Add Task to DB
+      //  Add Task to DB
       const taskRes = await axios.post("/tasks", taskData);
 
       if (taskRes.data?.insertedId) {
