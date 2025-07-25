@@ -141,7 +141,7 @@ const AddTask = () => {
           <p className="text-red-500">{errors.task_detail.message}</p>
         )}
 
-        {/* Image Upload */}
+        {/* Image Upload*/}
         <div>
           <label>Upload Task Image</label>
           <input
