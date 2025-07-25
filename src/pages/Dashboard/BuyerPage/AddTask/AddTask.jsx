@@ -68,7 +68,7 @@ const AddTask = () => {
           coins: -totalCost, // will be added (or deducted) in backend
         });
 
-        toast.success("✅ Task added and coins deducted!");
+        toast.success(" Task added and coins deducted!");
         queryClient.invalidateQueries(["allUsers"]);
         reset();
         setImageURL("");
