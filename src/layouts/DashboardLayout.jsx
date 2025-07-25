@@ -51,9 +51,9 @@ const DashboardLayout = () => {
 
   return (
     <div className="bg-base-100">
-      <div className="min-h-screen flex flex-col">
+      <div className="flex flex-col">
         {/* Navbar */}
-        <div className="bg-base-100 sticky top-0 z-50">
+        <div className="bg-base-100 sticky top-0 z-50 ">
           <div className="h-[80px] container mx-auto px-1 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <label
@@ -124,7 +124,7 @@ const DashboardLayout = () => {
         </div>
 
         {/* Drawer layout */}
-        <div className="drawer gap-3 drawer-mobile container mx-auto lg:drawer-open flex-1">
+        <div className="drawer min-h-full gap-3 drawer-mobile  container mx-auto lg:drawer-open flex-1">
           <input
             id="dashboard-drawer"
             type="checkbox"
@@ -134,13 +134,13 @@ const DashboardLayout = () => {
             <Outlet />
           </div>
 
-          <div className="drawer-side mt-20 md:mt-0">
+          <div className="drawer-side mt-20 z-50 lg:z-auto md:mt-0">
             <label
               htmlFor="dashboard-drawer"
               className="drawer-overlay"
             ></label>
 
-            <ul className="menu p-4 w-72 min-h-full bg-base-200 text-base-content space-y-1">
+            <ul className="menu p-4 w-72 z-52  min-h-full  bg-base-200 text-base-content space-y-1">
               {/* Common Links */}
               <div className="text-sm text-right sm:hidden flex gap-2 justify-between">
                 <p className="capitalize border p-1 px-3 rounded-full">

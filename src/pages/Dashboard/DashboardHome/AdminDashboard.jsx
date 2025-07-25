@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaCheck } from 'react-icons/fa';
 import useAxios from '../../../hooks/useAxios';
+import Loading from '../../../components/Loading/Loading';
 
 const AdminDashboard = () => {
   const axiosSecure = useAxios();
@@ -58,7 +59,7 @@ const approveMutation = useMutation({
   if (statsLoading || requestsLoading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        Loading...
+        <Loading></Loading>
       </div>
     );
   }

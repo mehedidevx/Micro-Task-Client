@@ -1,22 +1,28 @@
 import React from "react";
-import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
+
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../components/Loading/Loading";
+import useAxios from "../../../hooks/useAxios";
+import useAuth from "../../../hooks/useAuth";
 
 const WorkerDashboard = () => {
   const { user } = useAuth();
-  const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxios();
 
   // Get all submissions by this worker
-  const { data: submissions = [] } = useQuery({
-    queryKey: ["mySubmissions", user?.email],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/submissions?email=${user.email}`);
-      return res.data;
-    },
-    enabled: !!user?.email,
-  });
+const { data = {} } = useQuery({
+  queryKey: ["mySubmissions", user?.email],
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/submissions?worker_email=${user.email}`);
+    return res.data;
+  },
+  enabled: !!user?.email,
+});
+
+const submissions = data.submissions || [];
+
+
 
   const { data: withdrawals = [], isLoading } = useQuery({
     queryKey: ["myWithdrawals", user?.email],
@@ -43,16 +49,17 @@ withdrawal_amount || 0), 0); // সব payable_amount যোগ করে
   const approvedSubmissions = submissions.filter(
     (s) => s.status === "approved"
   );
+  console.log(approvedSubmissions)
   if(isLoading){
     return <Loading></Loading>
   }
 
   return (
     <div className="space-y-8">
-      <h2 className="text-3xl font-bold mb-6">Welcome, Worker</h2>
+      <h2 className="text-3xl font-bold mb-6 text-primary">Welcome, Worker</h2>
 
       {/* States Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 text-white md:grid-cols-3 gap-4">
         <div className="bg-blue-600 p-4 rounded-xl shadow">
           <h4 className="text-xl font-semibold">Total Submissions</h4>
           <p className="text-2xl">{totalSubmissions}</p>
@@ -71,9 +78,9 @@ withdrawal_amount || 0), 0); // সব payable_amount যোগ করে
       <div>
         <h3 className="text-2xl font-bold mb-4">Approved Submissions</h3>
         <div className="overflow-x-auto">
-          <table className="table w-full border">
+          <table className="table w-full border border-gray-300">
             <thead>
-              <tr className="bg-gray-100 text-black">
+              <tr className="bg-primary text-white">
                 <th>#</th>
                 <th>Task Title</th>
                 <th>Payable Amount</th>
@@ -86,7 +93,7 @@ withdrawal_amount || 0), 0); // সব payable_amount যোগ করে
                 <tr key={sub._id}>
                   <td>{index + 1}</td>
                   <td>{sub.task_title}</td>
-                  <td>${sub.payable_amount}</td>
+                  <td>{sub.payable_amount}</td>
                   <td>{sub.buyer_name}</td>
                   <td className="text-green-600 font-semibold">{sub.status}</td>
                 </tr>

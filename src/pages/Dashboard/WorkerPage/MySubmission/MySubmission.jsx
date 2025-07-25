@@ -55,7 +55,7 @@ const MySubmission = () => {
       ) : (
         <div className="overflow-x-auto  rounded shadow">
           <table className="table w-full">
-            <thead className="bg-gray-600">
+            <thead className="bg-primary text-white">
               <tr>
                 <th>#</th>
                 <th>Task Title</th>

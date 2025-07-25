@@ -42,34 +42,40 @@ const TopWorkers = () => {
       <div className="container mx-auto mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
      
       {topWorkers.map((worker) => {
-        const rating = getRandomRating();
-        return (
-          <div
-            key={worker._id || worker.email}
-            className=" rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
-          >
-            <div className="relative h-40 w-full overflow-hidden">
-              <img
-                src={worker.photo || "/default-user.png"}
-                alt={worker.name || worker.email}
-                className="object-cover w-full h-full brightness-90 hover:brightness-110 transition"
-              />
-            </div>
-            <div className="p-4">
-              <h3 className="text-xl font-semibold mb-1">
-                {worker.name || worker.email}
-              </h3>
-              <p className="text-sm text-gray-500 mb-2">
-                Coins: <span className="font-medium">{worker.coin || 0}</span>
-              </p>
-              <div className="flex items-center space-x-2">
-                <StarRating rating={rating} />
-                <span className="text-gray-600 text-sm">{rating} Reviews</span>
-              </div>
-            </div>
-          </div>
-        );
-      })}
+  const rating = getRandomRating();
+  return (
+    <div
+      key={worker._id || worker.email}
+      className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-5 text-center"
+    >
+      {/* Profile Photo */}
+      <div className="flex justify-center mb-4">
+        <img
+          src={worker.photo || "/default-user.png"}
+          alt={worker.name || worker.email}
+          className="w-24 h-24 rounded-full object-cover border-4 border-primary shadow-sm hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+
+      {/* Name */}
+      <h3 className="text-lg font-bold text-gray-800 mb-1">
+        {worker.name || worker.email}
+      </h3>
+
+      {/* Coins */}
+      <p className="text-sm text-gray-500 mb-2">
+        Coins: <span className="font-semibold text-primary">{worker.coin || 0}</span>
+      </p>
+
+      {/* Rating */}
+      <div className="flex justify-center items-center space-x-2">
+        <StarRating rating={rating} />
+        <span className="text-gray-600 text-sm">{rating} Reviews</span>
+      </div>
+    </div>
+  );
+})}
+
     </div>
     </div>
   );

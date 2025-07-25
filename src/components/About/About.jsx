@@ -14,7 +14,7 @@ const About = () => {
       </motion.h2>
 
       <motion.div
-        className=" rounded-2xl shadow-xl p-8 md:p-12 text-gray-200 text-lg leading-relaxed space-y-6"
+        className=" rounded-2xl shadow-xl p-8 md:p-12 text-gray-500 text-lg leading-relaxed space-y-6"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}

@@ -12,7 +12,8 @@ import TopWorkers from './TopWorkers';
 
 const Home = () => {
     return (
-        <div className='container mx-auto'>
+        <div>
+            <div className='container mx-auto'>
             <HeroSection></HeroSection>
             
             <Outlet></Outlet>
@@ -21,7 +22,9 @@ const Home = () => {
             <FeaturedServices></FeaturedServices>
             <TipsAndTricks></TipsAndTricks>
             <CareerGuidance></CareerGuidance>
-            <Footer></Footer>
+            
+        </div>
+       
         </div>
     );
 };
