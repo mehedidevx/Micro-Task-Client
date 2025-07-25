@@ -46,7 +46,7 @@ const AddTask = () => {
       return;
     }
 
-    // ✅ Prepare Task Data
+    //  Prepare Task Data
     const taskData = {
       ...data,
       required_workers: requiredWorkers,
