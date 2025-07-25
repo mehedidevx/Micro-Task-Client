@@ -29,13 +29,13 @@ const AddTask = () => {
   });
   console.log(userInfo);
   const onSubmit = async (data) => {
-    // ✅ Image Check
+    // Image Check
     if (!imageURL) {
       toast.error("Please upload an image before submitting.");
       return;
     }
 
-    // ✅ Parse & Calculate Cost
+    // Parse & Calculate Cost
     const requiredWorkers = parseInt(data.required_workers);
     const payableAmount = parseFloat(data.payable_amount);
     const totalCost = requiredWorkers * payableAmount;
