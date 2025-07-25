@@ -62,7 +62,7 @@ const AddTask = () => {
       const taskRes = await axios.post("/tasks", taskData);
 
       if (taskRes.data?.insertedId) {
-        // 2️⃣ Deduct Coins
+        //  Deduct Coins
         await axios.patch(`/users`, {
           email: user?.email,
           coins: -totalCost, // will be added (or deducted) in backend
