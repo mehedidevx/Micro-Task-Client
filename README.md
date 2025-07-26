@@ -1,12 +1,42 @@
-# React + Vite
+# 💼 MicroTask - Client Side
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MicroTask is a micro-task and earning platform where buyers can post small online tasks, and workers can complete them to earn coins. This repository contains the **client-side** source code built using **React.js**, **Tailwind CSS**, **Firebase**, and more.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Site
 
-## Expanding the ESLint configuration
+🔗 [Visit Live Website](https://micro-task-30fbe.web.app)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Features
+
+- 🔐 Firebase Authentication (Google login)
+- 🎭 Role-based Dashboard (Buyer / Worker / Admin)
+- 🧾 Post Tasks with Image Upload (ImgBB)
+- 📥 Apply to Tasks with Form Validation
+- 📤 Real-time Notifications (React Query)
+- 💰 Coin Package Purchase via Stripe
+- 🛡️ Protected Routes with Auth Hooks
+- 📊 Admin Panel (User & Task Management)
+- 📱 Fully Responsive UI
+- 🌟 Rating system for Top Workers
+
+---
+
+## 🔧 Technologies Used
+
+- **React.js**
+- **React Router DOM**
+- **Tailwind CSS + DaisyUI**
+- **Firebase Authentication**
+- **TanStack React Query**
+- **ImgBB Image Upload**
+- **Stripe Payment Integration**
+- **Axios & JWT Auth**
+- **Framer Motion (for animations)**
+
+---
+
+
