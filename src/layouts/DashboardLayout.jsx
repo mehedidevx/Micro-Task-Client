@@ -17,15 +17,16 @@ import {
 import { FiLogOut } from "react-icons/fi";
 import useAuth from "../hooks/useAuth";
 import useUserRole from "../hooks/useUserRole";
-import useAxios from "../hooks/useAxios";
+
 import { useQuery } from "@tanstack/react-query";
 import Footer from "../pages/Home/Footer";
 import NotificationDropdown from "../components/NotificationDropdown/NotificationDropdown";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
   const { role, roleLoading } = useUserRole();
-  const axios = useAxios();
+  const axios = useAxiosSecure();
   const navigate = useNavigate();
 
   const handleLogout = async () => {

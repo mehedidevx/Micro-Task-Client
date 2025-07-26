@@ -10,6 +10,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [firebaseUser, setFirebaseUser] = useState(null)
 
     const createUser = (email, password) => {
         setLoading(true);
@@ -38,6 +39,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
+            setFirebaseUser(currentUser)
             console.log('user in the auth state change', currentUser)
             setLoading(false);
         });
@@ -54,7 +56,8 @@ const AuthProvider = ({ children }) => {
         signIn,
         signInWithGoogle,
         updateUserProfile,
-        logOut
+        logOut,
+        firebaseUser,
     }
 
     return (

@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: `https://micro-task-platform-server.vercel.app`
+    baseURL: import.meta.env.VITE_SERVER_URL
 })
+
 
 const useAxios = () => {
     return axiosInstance;

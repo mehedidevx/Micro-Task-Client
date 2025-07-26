@@ -12,7 +12,7 @@ const Login = () => {
   const { signIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from || '/'; // ✅ Redirect to dashboard after login
+  const from = location.state?.from || '/dashboard'; // ✅ Redirect to dashboard after login
 
   const [loginError, setLoginError] = useState('');
 

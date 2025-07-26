@@ -19,7 +19,7 @@ const Footer = () => {
         </div>
 
         {/* Quick Links */}
-        <div className="lg:w-1/3  flex flex-col  items-center">
+        <div className="lg:w-1/3  lg:flex flex-col  items-center">
           <h3 className="text-lg font-semibold mb-3 text-primary">
             Quick Links
           </h3>
@@ -60,7 +60,7 @@ const Footer = () => {
         </div>
 
         {/* Social Media */}
-        <div className="lg:w-1/3  flex flex-col  items-end">
+        <div className="lg:w-1/3  lg:flex flex-col  items-end">
           <h3 className="text-lg font-semibold mb-3 text-primary">
             Connect With Us
           </h3>

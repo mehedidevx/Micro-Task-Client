@@ -104,7 +104,7 @@ const AddTask = () => {
 
       if (imageUrl) {
         setImageURL(imageUrl);
-        toast.success("✅ Image uploaded!");
+        
       } else {
         toast.error("❌ Failed to get image URL!");
       }

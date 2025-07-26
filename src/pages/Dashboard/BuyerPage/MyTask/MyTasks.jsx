@@ -21,7 +21,7 @@ const MyTasks = () => {
     required_workers: "",
     payable_amount: "",
   });
-  const { data: tasks = [], isLoading }  = useQuery({
+  const { data: tasks = [], isLoading } = useQuery({
     queryKey: ["myTasks", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -63,8 +63,8 @@ const MyTasks = () => {
       toast.error("Failed to update task");
     }
   };
-  if(isLoading){
-    return <Loading></Loading>
+  if (isLoading) {
+    return <Loading></Loading>;
   }
 
   return (
@@ -78,7 +78,7 @@ const MyTasks = () => {
               <th>Title</th>
               <th>Required</th>
               <th>Payable</th>
-              
+
               <th>Deadline</th>
               <th>Actions</th>
             </tr>
@@ -97,7 +97,7 @@ const MyTasks = () => {
                 <td>{task.task_title}</td>
                 <td>{task.required_workers}</td>
                 <td>{task.payable_amount}</td>
-                
+
                 <td>{task.completion_date}</td>
                 <td className="flex items-center mt-3 gap-2">
                   <button
@@ -132,66 +132,72 @@ const MyTasks = () => {
           </p>
         )}
       </div>
-      <Modal
-        isOpen={isEditModalOpen}
-        onRequestClose={() => setIsEditModalOpen(false)}
-        contentLabel="Update Task Modal"
-        className=" p-6 max-w-md mx-auto mt-20 rounded shadow-lg bg-white"
-        overlayClassName="fixed inset-0 "
-      >
-        <h2 className="text-lg font-bold mb-4">Update Task</h2>
-        <form onSubmit={handleUpdate} className="space-y-4 ">
-          <div>
-            <label className="block mb-1 text-sm font-medium">Title</label>
-            <input
-              type="text"
-              
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-              className="w-full border p-2 rounded"
-            />
-          </div>
 
-          <div>
-            <label className="block mb-1 text-sm font-medium">
-              Task Detail
-            </label>
-            <textarea
-              rows="3"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-              className="w-full border p-2 rounded"
-            ></textarea>
-          </div>
+      {isEditModalOpen && (
+        <div className="modal modal-open">
+          <div className="modal-box w-full max-w-2xl">
+            <h3 className="font-bold text-lg mb-4">Update Task</h3>
 
-          <div>
-            <label className="block mb-1 text-sm font-medium">
-              Submission Details
-            </label>
-            <textarea
-              rows="2"
-              value={formData.submission_Details}
-              onChange={(e) =>
-                setFormData({ ...formData, submission_Details: e.target.value })
-              }
-              className="w-full border p-2 rounded"
-            ></textarea>
-          </div>
+            <form onSubmit={handleUpdate} className="space-y-4">
+              <div>
+                <label className="block mb-1 text-sm font-medium">Title</label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  className="w-full border p-2 rounded"
+                />
+              </div>
 
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              Update
-            </button>
+              <div>
+                <label className="block mb-1 text-sm font-medium">
+                  Task Detail
+                </label>
+                <textarea
+                  rows="3"
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  className="w-full border p-2 rounded"
+                ></textarea>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-sm font-medium">
+                  Submission Details
+                </label>
+                <textarea
+                  rows="2"
+                  value={formData.submission_Details}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      submission_Details: e.target.value,
+                    })
+                  }
+                  className="w-full border p-2 rounded"
+                ></textarea>
+              </div>
+
+              <div className="modal-action">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setIsEditModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Update
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
-      </Modal>
+        </div>
+      )}
     </div>
   );
 };

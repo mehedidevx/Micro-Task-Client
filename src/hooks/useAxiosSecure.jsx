@@ -1,18 +1,20 @@
 import axios from 'axios';
 import React from 'react';
-import useAuth from './useAuth';
+
 import { useNavigate } from 'react-router';
+import useAuth from './useAuth';
 
 const axiosSecure = axios.create({
-    baseURL: `https://micro-task-platform-server.vercel.app`
+    baseURL: import.meta.env.VITE_SERVER_URL
 });
 
 const useAxiosSecure = () => {
-    const { user, logOut } = useAuth();
+    const { user, logOut, firebaseUser } = useAuth();
     const navigate = useNavigate();
+    console.log(firebaseUser)
 
     axiosSecure.interceptors.request.use(config => {
-        config.headers.Authorization = `Bearer ${user.accessToken}`
+        config.headers.Authorization = `Bearer ${firebaseUser.accessToken}`
         return config;
     }, error => {
         return Promise.reject(error);
