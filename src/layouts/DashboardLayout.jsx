@@ -21,12 +21,13 @@ import useUserRole from "../hooks/useUserRole";
 import { useQuery } from "@tanstack/react-query";
 import Footer from "../pages/Home/Footer";
 import NotificationDropdown from "../components/NotificationDropdown/NotificationDropdown";
-import useAxiosSecure from "../hooks/useAxiosSecure";
+import useAxios from "../hooks/useAxios";
+
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
   const { role, roleLoading } = useUserRole();
-  const axios = useAxiosSecure();
+  const axios = useAxios();
   const navigate = useNavigate();
 
   const handleLogout = async () => {

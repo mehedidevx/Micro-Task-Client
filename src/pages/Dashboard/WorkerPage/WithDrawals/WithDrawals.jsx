@@ -1,87 +1,101 @@
 import React, { useState } from "react";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
 import Swal from "sweetalert2";
 import useAuth from "../../../../hooks/useAuth";
-
+import useAxios from "../../../../hooks/useAxios";
 import Loading from "../../../../components/Loading/Loading";
-import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
 const Withdrawals = () => {
   const { user } = useAuth();
-  const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxios();
   const queryClient = useQueryClient();
 
   const [coinToWithdraw, setCoinToWithdraw] = useState(0);
   const [paymentSystem, setPaymentSystem] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
 
-  // Get user's current coin
+  // ✅ Fetch user data
   const { data: userData = {}, isLoading } = useQuery({
     queryKey: ["user", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users/${user?.email}`);
+      const res = await axiosSecure.get(`/users/${user.email}`);
       return res.data;
     },
-    enabled: !!user?.email,
   });
 
   const totalCoins = userData?.coin || 0;
   const withdrawableAmount = (coinToWithdraw / 20).toFixed(2);
   const totalWithdrawableAmount = (totalCoins / 20).toFixed(2);
 
-  // Mutation to submit withdrawal
+  // ✅ Withdraw + Coin Patch Mutation
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (withdrawData) => {
-      const res = await axiosSecure.post("/withdrawals", withdrawData);
-      return res.data;
+    mutationFn: async () => {
+      if (coinToWithdraw > totalCoins) {
+        throw new Error("❌ You don't have enough coins.");
+      }
+
+      // 1️⃣ Patch user coin (using negative value)
+      await axiosSecure.patch("/users", {
+        email: user.email,
+        coins: -parseInt(coinToWithdraw),
+      });
+
+      // 2️⃣ Create withdrawal record
+      const withdrawal = {
+        worker_email: user.email,
+        worker_name: user.displayName,
+        withdrawal_coin: parseInt(coinToWithdraw),
+        withdrawal_amount: parseFloat(withdrawableAmount),
+        payment_system: paymentSystem,
+        account_number: accountNumber,
+        withdraw_date: new Date().toISOString(),
+        status: "pending",
+      };
+
+      await axiosSecure.post("/withdrawals", withdrawal);
     },
     onSuccess: () => {
-      Swal.fire("Success", "Withdrawal request submitted!", "success");
-      queryClient.invalidateQueries(["user-coins", user?.email]);
+      Swal.fire("✅ Success", "Withdrawal request submitted!", "success");
+      queryClient.invalidateQueries(["user", user?.email]);
       setCoinToWithdraw(0);
       setPaymentSystem("");
       setAccountNumber("");
     },
+    onError: (err) => {
+      Swal.fire("❌ Error", err.message || "Something went wrong.", "error");
+    },
   });
-  if (isLoading) {
-    return <Loading></Loading>;
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const withdrawal = {
-      worker_email: user?.email,
-      worker_name: user?.displayName,
-      withdrawal_coin: parseInt(coinToWithdraw),
-      withdrawal_amount: parseFloat(withdrawableAmount),
-      payment_system: paymentSystem,
-      account_number: accountNumber,
-      withdraw_date: new Date().toISOString(),
-      status: "pending",
-    };
-    await mutateAsync(withdrawal);
+    await mutateAsync();
   };
 
+  if (isLoading) return <Loading />;
+
   return (
-    <div className="max-w-xl mx-auto p-4 border rounded-xl mt-10">
-      <h2 className="text-2xl font-bold mb-4">Withdrawals</h2>
-      <p className="mb-2 font-medium">
-        Total Coins: <span className="text-blue-600">{totalCoins}</span>
-      </p>
-      <p className="mb-4 font-medium">
-        Withdrawable Amount:{" "}
-        <span className="text-green-600">${totalWithdrawableAmount}</span>
-      </p>
+    <div className="max-w-xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
+      <h2 className="text-2xl font-bold text-center mb-4">Withdraw Coins</h2>
+
+      <div className="mb-4 text-sm font-medium space-y-1">
+        <p>
+          ✅ <span className="text-blue-600">Total Coins:</span> {totalCoins}
+        </p>
+        <p>
+          💰 <span className="text-green-600">Total Withdrawable:</span> $
+          {totalWithdrawableAmount}
+        </p>
+      </div>
 
       {totalCoins >= 200 ? (
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Coin Input */}
           <div>
-            <label className="block">Coin To Withdraw:</label>
+            <label className="label text-sm font-semibold">Coin to Withdraw:</label>
             <input
               type="number"
-              min="0"
+              min="200"
               max={totalCoins}
               value={coinToWithdraw}
               onChange={(e) => setCoinToWithdraw(e.target.value)}
@@ -90,18 +104,20 @@ const Withdrawals = () => {
             />
           </div>
 
+          {/* USD Amount */}
           <div>
-            <label className="block">Withdraw Amount ($):</label>
+            <label className="label text-sm font-semibold">Withdraw Amount ($):</label>
             <input
               type="text"
               value={withdrawableAmount}
               readOnly
-              className="input input-bordered w-full bg-gray-600"
+              className="input input-bordered w-full bg-gray-100"
             />
           </div>
 
+          {/* Payment System */}
           <div>
-            <label className="block">Select Payment System:</label>
+            <label className="label text-sm font-semibold">Payment System:</label>
             <select
               value={paymentSystem}
               onChange={(e) => setPaymentSystem(e.target.value)}
@@ -118,8 +134,9 @@ const Withdrawals = () => {
             </select>
           </div>
 
+          {/* Account Number */}
           <div>
-            <label className="block">Account Number:</label>
+            <label className="label text-sm font-semibold">Account Number:</label>
             <input
               type="text"
               value={accountNumber}
@@ -129,17 +146,18 @@ const Withdrawals = () => {
             />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="btn btn-primary w-full"
             disabled={isPending || coinToWithdraw > totalCoins}
           >
-            {isPending ? "Submitting..." : "Withdraw"}
+            {isPending ? "Processing..." : "Withdraw"}
           </button>
         </form>
       ) : (
-        <p className="text-red-600 font-semibold text-center">
-          Insufficient coin
+        <p className="text-red-600 text-center font-semibold mt-4">
+          ⚠️ You need at least 200 coins to withdraw.
         </p>
       )}
     </div>

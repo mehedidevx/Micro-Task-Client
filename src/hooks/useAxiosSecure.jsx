@@ -9,12 +9,12 @@ const axiosSecure = axios.create({
 });
 
 const useAxiosSecure = () => {
-    const { user, logOut, firebaseUser } = useAuth();
+    const { user, logOut } = useAuth();
     const navigate = useNavigate();
-    console.log(firebaseUser)
+
 
     axiosSecure.interceptors.request.use(config => {
-        config.headers.Authorization = `Bearer ${firebaseUser.accessToken}`
+        config.headers.Authorization = `Bearer ${user.accessToken}`
         return config;
     }, error => {
         return Promise.reject(error);

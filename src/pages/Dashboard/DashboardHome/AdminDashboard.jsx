@@ -1,60 +1,99 @@
-import React from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { FaCheck } from 'react-icons/fa';
-import useAxios from '../../../hooks/useAxios';
-import Loading from '../../../components/Loading/Loading';
+import React from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { FaCheck } from "react-icons/fa";
+import useAxios from "../../../hooks/useAxios";
+import Loading from "../../../components/Loading/Loading";
+import toast from "react-hot-toast";
+import useAuth from "../../../hooks/useAuth";
 
 const AdminDashboard = () => {
   const axiosSecure = useAxios();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+
 
   // Fetch admin stats
-// Fetch admin stats
-const { data: stats = {}, isLoading: statsLoading } = useQuery({
-  queryKey: ['adminStats'],
-  queryFn: async () => {
-    const [usersRes, tasksRes] = await Promise.all([
-      axiosSecure.get('/users'),
-      axiosSecure.get('/tasks'),
-    ]);
+  // Fetch admin stats
+  const { data: stats = {}, isLoading: statsLoading } = useQuery({
+    queryKey: ["adminStats"],
+    queryFn: async () => {
+      const [usersRes, tasksRes] = await Promise.all([
+        axiosSecure.get("/users"),
+        axiosSecure.get("/tasks"),
+      ]);
 
-    const users = usersRes.data || [];
-    const tasks = tasksRes.data || [];
+      const users = usersRes.data || [];
+      const tasks = tasksRes.data || [];
 
-    const totalWorkers = users.filter(user => user.role === 'Worker').length;
-    const totalBuyers = users.filter(user => user.role === 'Buyer').length;
-    console.log(tasks)
-    const totalTaskCoins = tasks.reduce((sum, task) => sum + (task.required_workers * task.payable_amount), 0);
-  const totalPayments = tasks.reduce((sum, task) => sum + (task.payment_amount || 0), 0);
+      const totalWorkers = users.filter(
+        (user) => user.role === "Worker"
+      ).length;
+      const totalBuyers = users.filter((user) => user.role === "Buyer").length;
 
-    return {
-      totalWorkers,
-      totalBuyers,
-      totalTaskCoins,
-      totalPayments,
-    };
-  },
-});
+      const totalTaskCoins = tasks.reduce(
+        (sum, task) => sum + task.required_workers * task.payable_amount,
+        0
+      );
+      const totalPayments = tasks.reduce(
+        (sum, task) => sum + (task.payment_amount || 0),
+        0
+      );
 
+      return {
+        totalWorkers,
+        totalBuyers,
+        totalTaskCoins,
+        totalPayments,
+      };
+    },
+  });
 
   // Fetch withdrawal requests
-const { data: withdrawRequests = [], isLoading: requestsLoading } = useQuery({
-  queryKey: ['withdrawRequests'],
+  const { data: withdrawRequests = [], isLoading: requestsLoading } = useQuery({
+    queryKey: ["withdrawRequests"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/admin/withdraw-requests");
+      return res.data;
+    },
+  });
+
+const { data } = useQuery({
+  queryKey: ["withdrawals", user?.email],
   queryFn: async () => {
-    const res = await axiosSecure.get('/admin/withdraw-requests');
-    return res.data;
+    const res = await axiosSecure.get("/withdrawals", {
+      params: {
+        email: user?.email,
+      },
+    });
+    return res.data; // ধরে নিচ্ছি এখানে শুধু array of withdrawals আছে, কোনো total নাই
   },
+  enabled: !!user?.email,
 });
+
+const withdrawals = data || [];
+
+// ✅ approved গুলোর withdrawal_amount যোগফল
+const totalWithdrawalAmount = withdrawals
+  .filter((item) => item.status === "approved")
+  .reduce((sum, item) => sum + (item.withdrawal_amount || 0), 0);
+
   // Mutation to approve withdrawal requests
-const approveMutation = useMutation({
-  mutationFn: async ({ id, email }) => {
-    await axiosSecure.patch(`/admin/withdraw-requests/${id}/approve`, { email });
-  },
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ['withdrawRequests'] });
-    queryClient.invalidateQueries({ queryKey: ['adminStats'] });
-  },
-});
+  const approveMutation = useMutation({
+    mutationFn: async ({ id, email }) => {
+      await axiosSecure.patch(`/admin/withdraw-requests/${id}/approve`, {
+        email,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["withdrawRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["adminStats"] });
+      toast.success("Withdrawal approved successfully!");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to approve withdrawal.");
+    },
+  });
 
   if (statsLoading || requestsLoading) {
     return (
@@ -84,7 +123,9 @@ const approveMutation = useMutation({
         </div>
         <div className="bg-base-200 p-6 rounded-xl shadow text-center">
           <h3 className="text-lg font-semibold mb-2">Total Payments</h3>
-          <p className="text-3xl font-bold">${stats.totalPayments?.toFixed(2) ?? '0.00'}</p>
+          <p className="text-3xl font-bold">
+                ${totalWithdrawalAmount.toFixed(2) ?? "0.00"}
+              </p>
         </div>
       </div>
 
@@ -112,13 +153,24 @@ const approveMutation = useMutation({
               <tr key={req._id}>
                 <td>{req.worker_email || req.email}</td>
                 <td>${req.withdrawal_amount ?? req.amount}</td>
-                <td className={`${req.status === 'pending' ? 'text-yellow-600' : 'text-green-600'}`}>
+                <td
+                  className={`${
+                    req.status === "pending"
+                      ? "text-yellow-600"
+                      : "text-green-600"
+                  }`}
+                >
                   {req.status.charAt(0).toUpperCase() + req.status.slice(1)}
                 </td>
                 <td>
-                  {req.status === 'pending' ? (
+                  {req.status === "pending" ? (
                     <button
-                      onClick={() => approveMutation.mutate({ id: req._id, email: req.worker_email || req.email })}
+                      onClick={() =>
+                        approveMutation.mutate({
+                          id: req._id,
+                          email: req.worker_email ?? req.email,
+                        })
+                      }
                       className="btn btn-sm btn-success flex items-center gap-2"
                       disabled={approveMutation.isLoading}
                     >

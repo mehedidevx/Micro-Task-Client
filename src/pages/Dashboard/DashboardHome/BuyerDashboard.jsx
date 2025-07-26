@@ -46,7 +46,6 @@ const BuyerDashboard = () => {
       );
       return res.data;
     },
-    
 
     onSuccess: async (_data, submission) => {
       toast.success("Submission approved successfully!");
@@ -57,10 +56,10 @@ const BuyerDashboard = () => {
         buyer_email: user.email,
         message: `Your submission for has been approved!`,
         title: submission.task_title,
-        buyerName: submission.buyer_name, 
+        buyerName: submission.buyer_name,
         coin: submission.payable_amount,
         type: "task_approved",
-        actionRoute: "/dashboard"
+        actionRoute: "/dashboard",
       });
 
       queryClient.invalidateQueries(["buyerSubmissions", user?.email]);
@@ -75,7 +74,7 @@ const BuyerDashboard = () => {
   // ❌ Reject submission
   const rejectMutation = useMutation({
     mutationFn: async ({ submissionId, taskId }) => {
-      await axiosSecure.patch(`/submissions/reject/${submissionId}`, {
+      await axiosSecure.patch(`/buyer/submissions/${submissionId}/reject`, {
         taskId,
       });
     },
