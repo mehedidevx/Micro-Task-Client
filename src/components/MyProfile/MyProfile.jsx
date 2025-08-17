@@ -33,10 +33,10 @@ const MyProfileName = () => {
         alt="Profile"
         className="w-24 h-24 mx-auto rounded-full object-cover mb-4 border-4 border-indigo-200"
       />
-      <h2 className="text-2xl font-semibold text-gray-100">
+      <h2 className="text-2xl font-semibold text-gray-700">
         {user?.displayName || "User Name Not Available"}
       </h2>
-      <p className="text-gray-100">{user?.email}</p>
+      <p className="text-gray-700">{user?.email}</p>
       <button
         onClick={() => setOpen(true)}
         className="mt-4 cursor-pointer btn-primary  text-white px-4 py-2 rounded-lg"
