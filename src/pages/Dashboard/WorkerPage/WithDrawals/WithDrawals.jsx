@@ -76,13 +76,13 @@ const Withdrawals = () => {
 
   return (
     <div className="max-w-xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-4">Withdraw Coins</h2>
+      <h2 className="text-2xl dark:text-gray-950 font-bold text-center mb-4">Withdraw Coins</h2>
 
       <div className="mb-4 text-sm font-medium space-y-1">
-        <p>
+        <p className="text-green-600">
           ✅ <span className="text-blue-600">Total Coins:</span> {totalCoins}
         </p>
-        <p>
+        <p className="text-green-600">
           💰 <span className="text-green-600">Total Withdrawable:</span> $
           {totalWithdrawableAmount}
         </p>
@@ -91,8 +91,8 @@ const Withdrawals = () => {
       {totalCoins >= 200 ? (
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Coin Input */}
-          <div>
-            <label className="label text-sm font-semibold">Coin to Withdraw:</label>
+          <div >
+            <label className="label text-sm font-semibold dark:text-black">Coin to Withdraw:</label>
             <input
               type="number"
               min="200"
@@ -106,18 +106,18 @@ const Withdrawals = () => {
 
           {/* USD Amount */}
           <div>
-            <label className="label text-sm font-semibold">Withdraw Amount ($):</label>
+            <label className="label text-sm font-semibold dark:text-black">Withdraw Amount ($):</label>
             <input
               type="text"
               value={withdrawableAmount}
               readOnly
-              className="input input-bordered w-full bg-gray-100"
+              className="input input-bordered w-full bg-gray-100 dark:text-black"
             />
           </div>
 
           {/* Payment System */}
           <div>
-            <label className="label text-sm font-semibold">Payment System:</label>
+            <label className="label text-sm font-semibold dark:text-black">Payment System:</label>
             <select
               value={paymentSystem}
               onChange={(e) => setPaymentSystem(e.target.value)}
