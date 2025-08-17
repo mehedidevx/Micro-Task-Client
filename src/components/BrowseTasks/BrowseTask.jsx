@@ -43,12 +43,12 @@ const BrowseTask = () => {
           </div>
           <div className="p-4">
             <h3 className="text-lg text-primary font-semibold mb-2 truncate">{task.task_title}</h3>
-            <p className="text-gray-600 text-sm mb-2 line-clamp-3">{task.task_detail}</p>
-            <div className="flex justify-between items-center text-sm text-gray-700 font-medium">
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-2 line-clamp-3">{task.task_detail}</p>
+            <div className="flex justify-between items-center text-sm text-gray-700 dark:text-gray-300 font-medium">
               <span>Workers Needed: {task.required_workers}</span>
               <span>Coins: {task.payable_amount}</span>
             </div>
-            <div className="mt-2 text-xs text-gray-500">
+            <div className="mt-2 text-xs text-gray-500 dark:text-gray-300">
               Deadline: {new Date(task.completion_date).toLocaleDateString()}
             </div>
           </div>
