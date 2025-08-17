@@ -170,7 +170,7 @@ const Register = () => {
           {errorMsg && <p className="text-red-500 mt-2">{errorMsg}</p>}
 
           {/* Submit */}
-          <button className="btn btn-primary w-full mt-4">Register</button>
+          <button className="btn border-none btn-primary w-full mt-4">Register</button>
         </form>
 
         <p className="text-center mt-4">
