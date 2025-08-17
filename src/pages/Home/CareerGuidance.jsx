@@ -26,7 +26,7 @@ const CareerGuidance = () => {
         {guidance.map(({ step, title, detail }) => (
           <div key={step} className="p-6 bg-base-200 rounded-lg shadow">
             <h3 className="text-xl font-semibold mb-2">Step {step}: {title}</h3>
-            <p className="text-gray-700">{detail}</p>
+            <p className="text-gray-700 dark:text-gray-400">{detail}</p>
           </div>
         ))}
       </div>
