@@ -128,7 +128,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 font-bold text-gray-800"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 font-bold text-gray-800 dark:text-white"
             >
               {menuLinks}
             </ul>
@@ -140,7 +140,7 @@ const Navbar = () => {
 
         {/* Center */}
         <div className="navbar-center hidden lg:gap-4 lg:flex">
-          <ul className="menu menu-horizontal flex gap-2 font-bold text-gray-800 px-1">{menuLinks}</ul>
+          <ul className="menu menu-horizontal flex gap-2 font-bold text-gray-800 dark:text-white px-1">{menuLinks}</ul>
         </div>
 
         {/* Right */}
