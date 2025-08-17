@@ -136,7 +136,7 @@ const Withdrawals = () => {
 
           {/* Account Number */}
           <div>
-            <label className="label text-sm font-semibold">Account Number:</label>
+            <label className="label text-sm font-semibold dark:text-black">Account Number:</label>
             <input
               type="text"
               value={accountNumber}
